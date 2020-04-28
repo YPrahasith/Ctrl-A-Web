@@ -82,6 +82,7 @@ app.post("/actions", function (request, response) {
   if (intent == "Scroll") io.to(room).emit("scroll", scroll_direction);
   else if (intent == "Navigation") io.to(room).emit("navigate", page);
   else if (intent == "Play") io.to(room).emit("play", action);
+  else if (intent == "Narration") io.to(room).emit("narrate");
 
   response.end();
 });

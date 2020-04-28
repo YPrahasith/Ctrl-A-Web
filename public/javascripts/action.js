@@ -37,20 +37,28 @@ if (uid == false) {
 socket.emit("join", uid);
 document.getElementById("uid").innerHTML = "Unique ID: " + uid;
 
+// Talkify
+talkify.config.remoteService.host = "https://talkify.net";
+talkify.config.remoteService.apiKey = "a800fd35-db29-4ef9-997b-cf040b6e5f5d";
+
+talkify.config.ui.audioControls = {
+  enabled: true, //<-- Disable to get the browser built in audio controls
+  container: document.getElementById("player-and-voices"),
+};
+
+var player = new talkify.TtsPlayer().enableTextHighlighting();
+
+var playlist = new talkify.playlist()
+  .begin()
+  .usingPlayer(player)
+  .withTextInteraction()
+  .withElements(document.querySelectorAll("p")) //<--Any element you'd like. Leave blank to let Talkify make a good guess
+  .build();
+
 // Listen for events
 socket.on("scroll", function (data) {
-  if (data == "up")
-    window.scrollBy({
-      top: -300,
-      left: 0,
-      behavior: "smooth",
-    });
-  else if (data == "down")
-    window.scrollBy({
-      top: 300, // could be negative value
-      left: 0,
-      behavior: "smooth",
-    });
+  if (data == "up") window.scrollBy(0, -300);
+  else if (data == "down") window.scrollBy(0, 300);
 });
 
 socket.on("navigate", function (data) {
@@ -65,5 +73,16 @@ socket.on("navigate", function (data) {
 socket.on("play", function (data) {
   var vid = document.getElementById("myVideo");
   if (data == "play") vid.play();
-  else if (data == "pause") vid.play();
+  else if (data == "pause") {
+    try {
+      vid.pause();
+    } catch (e) {}
+    try {
+      playlist.pause();
+    } catch (e) {}
+  }
+});
+
+socket.on("narrate", function () {
+  playlist.play();
 });
