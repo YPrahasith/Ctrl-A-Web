@@ -54,6 +54,8 @@ var playlist = new talkify.playlist()
   .withTextInteraction()
   .withElements(document.querySelectorAll("p")) //<--Any element you'd like. Leave blank to let Talkify make a good guess
   .build();
+var player1 = new talkify.TtsPlayer(); //or new talkify.Html5Player()
+player1.playText(uid);
 
 // Listen for events
 socket.on("scroll", function (data) {
