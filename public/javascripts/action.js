@@ -40,11 +40,13 @@ var uid = getCookie("uid");
 console.log(uid);
 if (uid == false) {
   uid = randomNumber(1000, 9999);
+   var player1 = new talkify.TtsPlayer(); //or new talkify.Html5Player()
+  player1.playText(uid)
   document.cookie = "uid=" + uid;
-  var player1 = new talkify.TtsPlayer(); //or new talkify.Html5Player()
-  player1.playText(uid);
 }
-
+function speak(){
+}
+window.onload=speak;
 socket.emit("join", uid);
 document.getElementById("uid").innerHTML = "Unique ID: " + uid;
 
