@@ -26,6 +26,17 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+// UID Setup
+var uid = getCookie("uid");
+console.log(uid);
+if (uid == false) {
+  uid = randomNumber(1000, 9999);
+  document.cookie = "uid=" + uid;
+}
+
+socket.emit("join", uid);
+document.getElementById("uid").innerHTML = "Unique ID: " + uid;
+
 // Talkify
 talkify.config.remoteService.host = "https://talkify.net";
 talkify.config.remoteService.apiKey = "a800fd35-db29-4ef9-997b-cf040b6e5f5d";
@@ -34,22 +45,6 @@ talkify.config.ui.audioControls = {
   enabled: true, //<-- Disable to get the browser built in audio controls
   container: document.getElementById("player-and-voices"),
 };
-
-// UID Setup
-var uid = getCookie("uid");
-console.log(uid);
-if (uid == false) {
-  uid = randomNumber(1000, 9999);
-   var player1 = new talkify.TtsPlayer(); //or new talkify.Html5Player()
-  player1.playText(uid)
-  document.cookie = "uid=" + uid;
-}
-function speak(){
-}
-window.onload=speak;
-socket.emit("join", uid);
-document.getElementById("uid").innerHTML = "Unique ID: " + uid;
-
 var player = new talkify.TtsPlayer().enableTextHighlighting();
 
 var playlist = new talkify.playlist()
